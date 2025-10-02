@@ -1,0 +1,91 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    overflow-x: hidden;
+}
+body{
+    background-color: #F8E7C3;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+img{
+    width: 15vw;
+}
+section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background-color: white;
+    width: 40vw;
+    height: 73vh;
+    border-radius: 5px ;
+}
+#oi{
+    height: 10vh;
+    width: 100vw;
+    background-color: #F8E7C3;
+}
+
+#teste {
+    justify-content: flex-start;
+    display: flex;
+    width: 100vw;
+    padding-left: 15vw;
+    cursor: pointer;
+}
+.iconClass{
+    color: black;
+}
+input{
+    width: 25vw;
+    height: 6vh;
+    padding-left: 15px;
+    margin-top: 3vh;
+}
+button{
+    width: 25vw;
+    height: 6vh;
+    background-color: #c1422b;
+    margin-top: 3vh;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.body-darkmode{
+    background-color: #1E1B16;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+.section-darkmode {
+    display: flex;
+    background-color: #1E1B16;
+    width: 40vw;
+    height: 70vh;
+    border-radius: 5px ;
+}
+.icon-class {
+    color: white ;
+
+}
+.divIcon {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.text-red {
+    color: red;
+    margin-top: 1vh;
+}
