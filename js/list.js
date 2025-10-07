@@ -81,6 +81,7 @@ const pasteis = [
 let body = document.querySelector("body")
 function renderProducts() {
     let tbody = document.querySelector("tbody")
+    tbody.innerHTML = ""
 
     for (let index = 0; index < pasteis.length; index++) {
         let tr = document.createElement("tr")
@@ -91,8 +92,8 @@ function renderProducts() {
                 <td>${pasteis[index].ingredientes}</td>
                 <td>${pasteis[index].tamanho}</td>
                 <td>
-                    <button class="btn btn-warning">Editar</button>
-                    <button  onclick="deletarPasteis(${pasteis[index].id})" class="btn btn-danger">Excluir</button>
+                  <button onclick="editarPastel(${pasteis[index].id})" class="btn btn-success">Editar</button>
+                  <button  onclick="deletarPasteis(${pasteis[index].id})" class="btn btn-danger">Excluir</button>
                 </td>
         `
         tbody.appendChild(tr)
@@ -102,7 +103,7 @@ renderProducts()
 
 function deletarPasteis(id) {
   let tbody = document.querySelector("tbody")
-  let pastel = pasteis.find((pastel) => pastel.id === id)
+  let pastel = pasteis.findIndex((pastel) => pastel.id === id)
   pasteis.splice(pastel,1)
   tbody.innerHTML = ""
   renderProducts()
@@ -116,19 +117,16 @@ function renderModal() {
         <div id="createModal" class="modal-content">
           <form action="">
             <div class="form-group">
-                <input type="text" class="form-control" placeholder="Digite seu Id" aria-label="Id" aria-describedby="basic-addon1" id="inputId">
+                <input type="text" class="form-control" placeholder="Nome do pastel" aria-label="Id" aria-describedby="basic-addon1" id="inputNome">
             </div>
             <div class="form-group">
-                <input type="text" class="form-control" placeholder="Digite seu nome" aria-label="Id" aria-describedby="basic-addon1" id="inputNome">
+                <input type="text" class="form-control" placeholder="Preço desejado" aria-label="Id" aria-describedby="basic-addon1" id="inputPreco">
             </div>
             <div class="form-group">
-                <input type="text" class="form-control" placeholder="Digite seu preço" aria-label="Id" aria-describedby="basic-addon1" id="inputPreco">
+                <input type="text" class="form-control" placeholder="Ingredientes" aria-label="Id" aria-describedby="basic-addon1" id="inputIngredientes">
             </div>
             <div class="form-group">
-                <input type="text" class="form-control" placeholder="Digite seu ingredientes" aria-label="Id" aria-describedby="basic-addon1" id="inputIngredientes">
-            </div>
-            <div class="form-group">
-                <input type="text" class="form-control" placeholder="Digite seu tamanho" aria-label="Id" aria-describedby="basic-addon1" id="inputTamanho">
+                <input type="text" class="form-control" placeholder="Tamanho do pastel" aria-label="Id" aria-describedby="basic-addon1" id="inputTamanho">
             </div>
           </form>
 
@@ -147,26 +145,83 @@ function removeModal() {
   body.removeChild(createModal)
 }
 
-function criarPastel()  {
-    let id = document.querySelector("#inputId").value
-    let nome = document.querySelector("#inputNome").value
-    let preco = document.querySelector("#inputPreco").value
-    let ingredientes = document.querySelector("#inputIngredientes").value
-    let tamanho = document.querySelector("#inputTamanho").value
-    let tbody = document.querySelector("tbody")
+function criarPastel() {
+  let nome = document.querySelector("#inputNome").value;
+  let preco = Number(document.querySelector("#inputPreco").value);
+  let ingredientes = document.querySelector("#inputIngredientes").value;
+  let tamanho = document.querySelector("#inputTamanho").value;
 
-    pasteis.push({
-      id:id,
-      nome:nome,
-      preco:preco,
-      ingredientes:ingredientes,
-      tamanho:tamanho
-    })
-    
-    removeModal()
-    tbody.innerHTML = ""
-    renderProducts()
-    
+  let novoId = 1;
+  if (pasteis.length > 0) {
+    novoId = Math.max(...pasteis.map(p => p.id)) + 1;
+  }
+
+  pasteis.push({
+    id: novoId,
+    nome,
+    preco,
+    ingredientes,
+    tamanho
+  });
+
+  removeModal();
+  renderProducts();
 }
 
+function editarPastel(id) {
+
+  const pastel = pasteis.find(p => p.id === id);
+  if (!pastel) return;
+
+  let div = document.createElement("div");
+  div.classList.add("modal-overlay");
+  div.innerHTML = `
+    <div id="editModal" class="modal-content">
+      <h3>Editar Pastel</h3>
+      <form>
+        <div class="form-group">
+          <input type="number" class="form-control" value="${pastel.id}" id="editId" disabled>
+        </div>
+        <div class="form-group">
+          <input type="text" class="form-control" value="${pastel.nome}" id="editNome">
+        </div>
+        <div class="form-group">
+          <input type="number" class="form-control" value="${pastel.preco}" id="editPreco">
+        </div>
+        <div class="form-group">
+          <input type="text" class="form-control" value="${pastel.ingredientes}" id="editIngredientes">
+        </div>
+        <div class="form-group">
+          <input type="text" class="form-control" value="${pastel.tamanho}" id="editTamanho">
+        </div>
+      </form>
+
+      <div id="div-buttons">
+        <button onclick="removeModal()" type="button" class="btn btn-secondary">Cancelar</button>
+        <button type="button" onclick="salvarEdicao(${id})" class="btn btn-success">Salvar</button>
+      </div>
+    </div>
+  `;
+  body.appendChild(div);
+}
+function salvarEdicao(id) {
+  const index = pasteis.findIndex(p => p.id === id);
+  if (index === -1) return;
+
+  const nome = document.querySelector("#editNome").value;
+  const preco = Number(document.querySelector("#editPreco").value);
+  const ingredientes = document.querySelector("#editIngredientes").value;
+  const tamanho = document.querySelector("#editTamanho").value;
+
+  pasteis[index] = {
+    ...pasteis[index],
+    nome,
+    preco,
+    ingredientes,
+    tamanho
+  };
+
+  removeModal();
+  renderProducts();
+}
 
