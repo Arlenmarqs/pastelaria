@@ -151,7 +151,7 @@ function criarPastel() {
   let ingredientes = document.querySelector("#inputIngredientes").value;
   let tamanho = document.querySelector("#inputTamanho").value;
 
-  let maiorID = 0;
+  let maiorId = 0;
   for (let index = 0;index < pasteis.length; index++){
     if (pasteis[index].id > maiorId) {
       maiorId = pasteis[index].id;
