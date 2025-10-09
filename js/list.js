@@ -1,4 +1,4 @@
-const pasteis = [
+let pasteis = JSON.parse(localStorage.getItem("pasteis")) || [
   {
     id: 1,
     nome: "Pastel de Palmito",
@@ -78,6 +78,10 @@ const pasteis = [
 }
 ];
 
+function salvarNoLocalStorage() {
+  localStorage.setItem("pasteis", JSON.stringify(pasteis));
+} 
+
 let body = document.querySelector("body")
 function renderProducts() {
     let tbody = document.querySelector("tbody")
@@ -104,8 +108,9 @@ renderProducts()
 function deletarPasteis(id) {
   let tbody = document.querySelector("tbody")
   let pastel = pasteis.findIndex((pastel) => pastel.id === id)
+  if (pastel === -1) return;
   pasteis.splice(pastel,1)
-  tbody.innerHTML = ""
+  salvarNoLocalStorage()
   renderProducts()
 }
 
@@ -167,6 +172,7 @@ function criarPastel() {
     tamanho
   });
 
+  salvarNoLocalStorage()
   removeModal();
   renderProducts();
 }
@@ -224,6 +230,7 @@ function salvarEdicao(id) {
     tamanho
   };
 
+  salvarNoLocalStorage()
   removeModal();
   renderProducts();
 }
